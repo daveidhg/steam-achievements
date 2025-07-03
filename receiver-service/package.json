@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "pino": "^9.7.0"
+  },
+  "devDependencies": {
+    "@types/pino": "^7.0.4"
+  }
+}
