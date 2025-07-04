@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   webhook-service:
     build:
@@ -18,52 +16,11 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: webhooks_db
+      POSTGRES_DB: webhook-db
+    ports: 
+      - "5432:5432"
     volumes:
-      - webhook_db_data:/var/lib/postgresql/data
-
-  poller-service:
-    build:
-      context: ./poller-service
-    container_name: poller-service
-    env_file:
-      - ./poller-service/.env
-    depends_on:
-      - poller-db
-
-  poller-db:
-    image: postgres:16.9
-    container_name: poller-db
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: poller_db
-    volumes:
-      - poller_db_data:/var/lib/postgresql/data
-
-  receiver-service:
-    build:
-      context: ./receiver-service
-    container_name: receiver-service
-    ports:
-      - "5001:5001"
-    env_file:
-      - ./receiver-service/.env
-    depends_on:
-      - receiver-db
-
-  receiver-db:
-    image: postgres:16.9
-    container_name: receiver-db
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: receiver_db
-    volumes:
-      - receiver_db_data:/var/lib/postgresql/data
-
+      - webhook-db-data:/var/lib/postgresql/data
 
 volumes:
-  webhook_db_data:
-  poller_db_data:
-  receiver_db_data:
+  webhook-db-data:

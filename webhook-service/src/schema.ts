@@ -1,13 +1,22 @@
 import { db } from './db';
-import { logger } from './logger';
+import pino from 'pino';
+
+const logger = pino();
 
 export async function createTables() {
-  await db.query(`
-    CREATE TABLE IF NOT EXISTS webhooks (
-      steam_id BIGINT PRIMARY KEY,
-      callback_url TEXT NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-  `);
-  logger.info('Tables created (if not exist)');
+  try {
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS webhooks (
+        id SERIAL PRIMARY KEY,
+        steam_id TEXT NOT NULL,
+        callback_url TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(steam_id, callback_url)
+      );
+    `);
+    logger.info('Table created or already exists');
+  }
+  catch (e) {
+    logger.error(e, 'Failed to query the database')
+  }
 }
