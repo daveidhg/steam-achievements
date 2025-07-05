@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import { createTables } from './schema';
 import pino from 'pino';
 import { requireAPIKey } from './auth';
-import { router as webhookRouter } from './webhooks';
-import { startDailyWebhookScheduler } from './scheduler';
+import { router as subscriptionRouter } from './subscriptions';
+import { startDailySubscriptionScheduler } from './scheduler';
 
 dotenv.config();
 const logger = pino();
@@ -13,7 +13,7 @@ const port = process.env.PORT;
 
 app.use(express.json());
 app.use(requireAPIKey)
-app.use('/webhooks', webhookRouter);
+app.use('/subscriptions', subscriptionRouter);
 
 app.get('/', (req, res) => {
     res.send('Webhook service is running!')
@@ -21,8 +21,8 @@ app.get('/', (req, res) => {
 
 createTables().then(() => {
     app.listen(port, () => {
-    logger.info(`Webhook service is running on port ${port}`)
+    logger.info(`Subscription service is running on port ${port}`)
     });
 });
 
-startDailyWebhookScheduler();
+startDailySubscriptionScheduler();

@@ -35,21 +35,21 @@ router.post('/', async (req: Request, res: Response) => {
 
     try {
         const result = await db.query(
-            `INSERT INTO webhooks (steam_id, callback_url) VALUES ($1, $2) ON CONFLICT (steam_id, callback_url) DO NOTHING`,
+            `INSERT INTO subscriptions (steam_id, callback_url) VALUES ($1, $2) ON CONFLICT (steam_id, callback_url) DO NOTHING`,
             [steam_id, callback_url]
         );
 
         if (result.rowCount === 0) {
-            logger.info('Duplicate webhook skipped')
-            res.status(200).json({ message: 'Webhook already exists, no action taken.'})
+            logger.info('Duplicate subscription skipped')
+            res.status(200).json({ message: 'Subscription already exists, no action taken.'})
         }
         else {
-            logger.info(`Webhook registered for steam ID ${steam_id}`);
-            res.status(201).json({ message: 'Webhook registered' });
+            logger.info(`subscription registered for steam ID ${steam_id}`);
+            res.status(201).json({ message: 'Subscription registered' });
         }
 
     } catch (e) {
-        logger.error({ e }, 'Failed to register webhook');
+        logger.error({ e }, 'Failed to register subscription');
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -64,26 +64,26 @@ router.delete('/', async (req: Request, res: Response) => {
 
     try {
         await db.query(
-            'DELETE FROM webhooks WHERE steam_id = $1 AND callback_url = $2',
+            'DELETE FROM subscriptions WHERE steam_id = $1 AND callback_url = $2',
             [steam_id, callback_url]
         );
-        logger.info(`Webhook deleted for steam ID ${steam_id}`);
-        res.status(200).json({ message: 'Webhook deleted' });
+        logger.info(`subscription deleted for steam ID ${steam_id}`);
+        res.status(200).json({ message: 'Subscription deleted' });
     }
     catch (e) {
-        logger.error({ e }, 'Failed to delete webhook');
+        logger.error({ e }, 'Failed to delete subscription');
         res.status(500).json({ error: 'Internal server error' });
     }
 });
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const result = await db.query('SELECT * FROM webhooks');
-        logger.info(`Retrieved ${result.rowCount} webhooks`);
+        const result = await db.query('SELECT * FROM subscriptions');
+        logger.info(`Retrieved ${result.rowCount} subscriptions`);
         res.status(200).json(result.rows);
     }
     catch (e) {
-        logger.error({ e }, 'Failed to retrieve webhooks');
+        logger.error({ e }, 'Failed to retrieve subscriptions');
         res.status(500).json({ error: 'Internal server error' });
     }
 });

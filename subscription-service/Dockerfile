@@ -10,8 +10,6 @@ COPY . .
 
 RUN npm run build
 
-RUN ls -la dist
-
 EXPOSE 5000
 
 CMD ["node", "dist/src/index.js"]

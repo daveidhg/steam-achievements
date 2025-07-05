@@ -1,26 +1,26 @@
 services:
-  webhook-service:
+  subscription-service:
     build:
-      context: ./webhook-service
-    container_name: webhook-service
+      context: ./subscription-service
+    container_name: subscription-service
     ports:
       - "5000:5000"
     env_file:
-      - ./webhook-service/.env
+      - ./subscription-service/.env
     depends_on:
-      - webhook-db
+      - subscription-db
 
-  webhook-db:
+  subscription-db:
     image: postgres:16.9
-    container_name: webhook-db
+    container_name: subscription-db
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: webhook-db
+      POSTGRES_DB: subscription-db
     ports: 
       - "5432:5432"
     volumes:
-      - webhook-db-data:/var/lib/postgresql/data
+      - subscription-db-data:/var/lib/postgresql/data
 
 volumes:
-  webhook-db-data:
+  subscription-db-data:
