@@ -6,7 +6,7 @@ const logger = pino();
 export async function createTables() {
   try {
     await db.query(`
-      CREATE TABLE IF NOT EXISTS webhooks (
+      CREATE TABLE IF NOT EXISTS subscriptions (
         id SERIAL PRIMARY KEY,
         steam_id TEXT NOT NULL,
         callback_url TEXT NOT NULL,
