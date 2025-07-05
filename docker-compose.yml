@@ -22,5 +22,29 @@ services:
     volumes:
       - subscription-db-data:/var/lib/postgresql/data
 
+  polling-service:
+    build:
+      context: ./polling-service
+    container_name: polling-service
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./polling-service/.env
+    depends_on:
+      - polling-db
+
+  polling-queue-db:
+    image: postgres:16.9
+    container_name: polling-queue-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: polling-queue-db
+    ports:
+      - "5433:5433"
+    volumes:
+      - polling-queue-db-data:/var/lib/postgresql/data
+
 volumes:
   subscription-db-data:
+  polling-queue-db-data:
