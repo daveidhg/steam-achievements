@@ -1,8 +1,8 @@
 import cron from 'node-cron';
 import { db } from './db';
-import axios from 'axios';
 import pino from 'pino';
 import dotenv from 'dotenv';
+import { notifyPollingService } from './subscriptionNotifyer';
 
 dotenv.config();
 const logger = pino();
@@ -20,23 +20,7 @@ export function startDailySubscriptionScheduler() {
                 logger.info('No subscriptions found');
                 return;
             }
-
-            if (!process.env.POLLING_URL) {
-                logger.error('POLLING_URL environment variable is not set');
-                return;
-            }
-            for (const subscription of subscriptions) {
-                try {
-                    await axios.post(process.env.POLLING_URL, {
-                        steam_id: subscription.steam_id,
-                        callback_url: subscription.callback_url
-                    })
-                    logger.info(`Notified polling service for subscription: ${subscription.steam_id} - ${subscription.callback_url}`);
-                }
-                catch (e) {
-                    logger.error({ e, subscription }, 'Failed to notify polling service for subscription');
-                }
-            }
+            notifyPollingService(subscriptions);
         }
         catch (e) {
             logger.error({ e }, 'Failed to fetch subscriptions from database');

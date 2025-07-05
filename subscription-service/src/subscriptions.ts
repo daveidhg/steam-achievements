@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import pino from "pino";
 import { db } from "./db";
+import { notifyPollingService } from "./subscriptionNotifyer";
 
 const logger = pino();
 export const router = Router();
@@ -44,6 +45,8 @@ router.post('/', async (req: Request, res: Response) => {
             res.status(200).json({ message: 'Subscription already exists, no action taken.'})
         }
         else {
+            // Notify the polling service immediately for the new subscription
+            notifyPollingService([{ steam_id, callback_url }], true);
             logger.info(`subscription registered for steam ID ${steam_id}`);
             res.status(201).json({ message: 'Subscription registered' });
         }
