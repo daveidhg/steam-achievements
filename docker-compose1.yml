@@ -24,6 +24,8 @@ services:
     build:
       context: ./polling-service
     container_name: polling-service
+    ports:
+      - "5001:5001"
     env_file:
       - ./polling-service/.env
     depends_on:
@@ -44,7 +46,7 @@ services:
       context: ./receiver-service
     container_name: receiver-service
     ports:
-      - "5001:5001"
+      - "5002:5002"
     env_file:
       - ./receiver-service/.env
     depends_on:

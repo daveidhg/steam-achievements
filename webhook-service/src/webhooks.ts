@@ -5,11 +5,31 @@ import { db } from "./db";
 const logger = pino();
 export const router = Router();
 
+function isValidSteamID(steam_id: string): boolean {
+    // Steam ID should be a 17-digit numeric string
+    return typeof steam_id === 'string' && /^[0-9]{17}$/.test(steam_id); 
+}
+
+function isValidCallbackURL(callback_url: string): boolean {
+    try {
+        const parsedUrl = new URL(callback_url);
+
+        if (/[;'"`<>{}\\]/.test(parsedUrl.href)) {
+            logger.warn(`Invalid characters in callback URL: ${callback_url}`);
+            return false;
+        }
+
+        return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+    } catch (e) {
+        return false;
+    }
+}
+
 router.post('/', async (req: Request, res: Response) => {
     const { steam_id, callback_url } = req.body;
 
-    if (!steam_id || !callback_url) {
-        res.status(400).json({ error: 'Missing steam_id or callback_url' });
+    if (!isValidSteamID(steam_id) || !isValidCallbackURL(callback_url)) {
+        res.status(400).json({ error: 'Missing or invalid steam_id or callback_url' });
         return;
     }
 
@@ -37,8 +57,9 @@ router.post('/', async (req: Request, res: Response) => {
 router.delete('/', async (req: Request, res: Response) => {
     const { steam_id, callback_url } = req.body;
 
-    if (!steam_id || !callback_url) {
-        res.status(400).json({ error: 'Missing steam_id or callback_url'});
+    if (!isValidSteamID(steam_id) || !isValidCallbackURL(callback_url)) {
+        res.status(400).json({ error: 'Missing or invalid steam_id or callback_url'});
+        return;
     }
 
     try {

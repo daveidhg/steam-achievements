@@ -4,6 +4,7 @@ import { createTables } from './schema';
 import pino from 'pino';
 import { requireAPIKey } from './auth';
 import { router as webhookRouter } from './webhooks';
+import { startDailyWebhookScheduler } from './scheduler';
 
 dotenv.config();
 const logger = pino();
@@ -23,3 +24,5 @@ createTables().then(() => {
     logger.info(`Webhook service is running on port ${port}`)
     });
 });
+
+startDailyWebhookScheduler();
