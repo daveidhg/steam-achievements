@@ -40,11 +40,14 @@ async function handlePollingQueue() {
                 achievements = achievements.filter((achievement: any) => (Date.now() / 1000 - achievement.unlocktime) > (60 * 60 * 24)); 
             }
             await axios.post(callback_url, {
+                apikey: process.env.API_KEY,
                 steam_id: steam_id,
                 appid: game.appid,
                 achievements: achievements
             })
         };
+        await db.query(`UPDATE polling_queue SET status = 'completed' WHERE id = $1`, [id]);
+        logger.info(`Successfully processed Steam ID: ${steam_id}`);
     }
     catch (e) {
         logger.error(e, 'Failed to query the database');
