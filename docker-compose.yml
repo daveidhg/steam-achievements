@@ -17,8 +17,6 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: subscription-db
-    ports: 
-      - "5432:5432"
     volumes:
       - subscription-db-data:/var/lib/postgresql/data
 
@@ -31,7 +29,7 @@ services:
     env_file:
       - ./polling-service/.env
     depends_on:
-      - polling-db
+      - polling-queue-db
 
   polling-queue-db:
     image: postgres:16.9
@@ -40,8 +38,6 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: polling-queue-db
-    ports:
-      - "5433:5433"
     volumes:
       - polling-queue-db-data:/var/lib/postgresql/data
 
@@ -63,8 +59,6 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: receiver-db
-    ports:
-      - "5434:5434"
     volumes:
       - receiver-db-data:/var/lib/postgresql/data
 

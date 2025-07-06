@@ -20,9 +20,8 @@ app.get('/', (req, res) => {
 });
 
 createTable().then(() => {
+    schedulePollingQueueHandler();
     app.listen(port, () => {
         logger.info(`Polling service is running on port ${port}`);
     });
 });
-
-schedulePollingQueueHandler()

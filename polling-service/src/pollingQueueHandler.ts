@@ -61,6 +61,6 @@ export async function schedulePollingQueueHandler() {
   } catch (err) {
     console.error('Error in polling queue handler:', err);
   } finally {
-    setTimeout(schedulePollingQueueHandler, 5); // Wait 5s after finish to avoid hitting API limits
+    setTimeout(schedulePollingQueueHandler, 5000); // Wait 5s after finish to avoid hitting API limits
   }
 }
