@@ -1,8 +1,23 @@
 {
-  "dependencies": {
-    "pino": "^9.7.0"
+  "name": "receiver-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "build": "tsc"
   },
-  "devDependencies": {
-    "@types/pino": "^7.0.4"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "@types/pg": "^8.15.4",
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "pino": "^9.7.0"
   }
 }

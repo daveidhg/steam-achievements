@@ -45,6 +45,30 @@ services:
     volumes:
       - polling-queue-db-data:/var/lib/postgresql/data
 
+  receiver-service:
+    build:
+      context: ./receiver-service
+    container_name: receiver-service
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./receiver-service/.env
+    depends_on:
+      - receiver-db
+
+  receiver-db:
+    image: postgres:16.9
+    container_name: receiver-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: receiver-db
+    ports:
+      - "5434:5434"
+    volumes:
+      - receiver-db-data:/var/lib/postgresql/data
+
 volumes:
   subscription-db-data:
   polling-queue-db-data:
+  receiver-db-data:
