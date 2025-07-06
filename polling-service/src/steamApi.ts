@@ -72,7 +72,8 @@ export async function getAchievements(steamId: string, appId: string) {
             return unlockedAchevements.map((achievement: any) => ({
                 name: achievement.name,
                 description: achievement.description,
-                unlocktime: achievement.unlocktime
+                unlocktime: achievement.unlocktime,
+                gamename: response.data.playerstats.gameName
             }));
         }
     }
