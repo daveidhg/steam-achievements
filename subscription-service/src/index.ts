@@ -16,7 +16,7 @@ app.use(requireAPIKey)
 app.use('/subscriptions', subscriptionRouter);
 
 app.get('/', (req, res) => {
-    res.send('Webhook service is running!')
+    res.send('Subscription service is running!')
 })
 
 createTables().then(() => {
