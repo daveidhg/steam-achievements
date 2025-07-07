@@ -27,11 +27,21 @@ function isValidCallbackURL(callback_url: string): boolean {
 }
 
 router.post('/', async (req: Request, res: Response) => {
-    const { steamid, callback_url } = req.body;
+    const { steamid } = req.body;
+    let callback_url = req.body.callback_url;
 
-    if (!isValidSteamID(steamid) || !isValidCallbackURL(callback_url)) {
-        res.status(400).json({ error: 'Missing or invalid steamid or callback_url' });
+    if (!isValidSteamID(steamid)) {
+        res.status(400).json({ error: 'Missing or invalid steamid' });
         return;
+    }
+
+    if (callback_url && !isValidCallbackURL(callback_url)) {
+        res.status(400).json({ error: 'Invalid callback_url' });
+        return;
+    }
+
+    else if (!callback_url) {
+        callback_url = process.env.DEFAULT_CALLBACK_URL;
     }
 
     try {

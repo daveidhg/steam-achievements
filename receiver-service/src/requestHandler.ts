@@ -12,16 +12,16 @@ router.post('/', async (req: Request, res: Response) => {
     const { steamid, appid, achievements } = req.body;
     if (!steamid || !appid || !achievements || !Array.isArray(achievements)) {
         logger.error('Missing or invalid steam_id, appid, or achievements in request body');
-        res.status(400).json({ error: 'Missing or invalid steam_id, appid, or achievements' });
+        res.status(400).json({ error: 'Missing or invalid steamid, appid, or achievements' });
         return;
     }
     try {
         const insertAchievements = achievements.map((achievement: any) => {
             const { name, description, unlocktime } = achievement;
             return db.query(
-                `INSERT INTO achievements (steam_id, appid, game_name, achievement_name, unlock_time, description)
+                `INSERT INTO achievements (steamid, appid, game_name, achievement_name, unlock_time, description)
                  VALUES ($1, $2, $3, $4, to_timestamp($5), $6)
-                 ON CONFLICT (steam_id, appid, achievement_name, unlock_time) DO NOTHING`,
+                 ON CONFLICT (steamid, appid, achievement_name, unlock_time) DO NOTHING`,
                 [steamid, appid, achievement.gamename || 'Unknown Game', name, unlocktime, description]
             );
         });
@@ -45,7 +45,7 @@ router.get('/', async (req: Request, res: Response) => {
             return;
         }
 
-        if (appid && !/^\d$/.test(appid as string)) {
+        if (appid && !/^\d+$/.test(appid as string)) {
             res.status(400).json({error: 'Invalid appid format. It should be a numeric string.'});
             return;
         }
