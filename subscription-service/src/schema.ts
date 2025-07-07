@@ -8,7 +8,7 @@ export async function createTables() {
     await db.query(`
       CREATE TABLE IF NOT EXISTS subscriptions (
         id SERIAL PRIMARY KEY,
-        steam_id TEXT NOT NULL,
+        steamid TEXT NOT NULL,
         callback_url TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         UNIQUE(steam_id, callback_url)

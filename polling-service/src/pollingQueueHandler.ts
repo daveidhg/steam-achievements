@@ -17,46 +17,49 @@ async function handlePollingQueue() {
             return;
         }
 
-        const { id, steam_id, callback_url, initial } = rows[0];
+        const { id, steamid, callback_url, initial } = rows[0];
 
         await db.query(`UPDATE polling_queue SET status = 'processing' WHERE id = $1`, [id])
 
         let games: any[];
         if (initial) {
-            logger.info(`Initial processing for Steam ID: ${steam_id}`);
-            games = await getAllPlayedGames(steam_id);
+            logger.info(`Initial processing for Steam ID: ${steamid}`);
+            games = await getAllPlayedGames(steamid);
         }
         else {
-            logger.info(`Scheduled processing for Steam ID: ${steam_id}`);
-            games = await getRecentlyPlayedGames(steam_id);
+            logger.info(`Scheduled processing for Steam ID: ${steamid}`);
+            games = await getRecentlyPlayedGames(steamid);
         }
         for (const game of games) {
             // Limit requests to avoid hitting API limits
             await new Promise(f => setTimeout(f, 2000)); 
 
             try {
-                var achievements = await getAchievements(steam_id, game.appid);
+                var achievements = await getAchievements(steamid, game.appid);
             }
             catch (e) {
-                logger.error(e, `Failed to fetch achievements for Steam ID: ${steam_id}, App ID: ${game.appid}`);
+                logger.error(e, `Failed to fetch achievements for Steam ID: ${steamid}, App ID: ${game.appid}`);
                 continue; // Skip to the next game if fetching achievements fails
             }
-            
+
             if (!initial) {
                 // Filter out achievements unlocked more than 24 hours ago
-                achievements = achievements.filter((achievement: any) => (Date.now() / 1000 - achievement.unlocktime) > (60 * 60 * 24)); 
+                achievements = achievements.filter((achievement: any) => (Date.now() / 1000 - achievement.unlocktime) < (60 * 60 * 24)); 
             }
             if (achievements.length > 0) {
                 await axios.post(callback_url, {
                     apikey: process.env.API_KEY,
-                    steam_id: steam_id,
+                    steamid: steamid,
                     appid: game.appid,
                     achievements: achievements
                 });
             }
+            else {
+                logger.info(`No new achievements for steamid: ${steamid}, appid: ${game.appid}`);
+            }
         };
         await db.query(`UPDATE polling_queue SET status = 'completed' WHERE id = $1`, [id]);
-        logger.info(`Successfully processed Steam ID: ${steam_id}`);
+        logger.info(`Successfully processed steamid: ${steamid}`);
     }
     catch (e) {
         logger.error(e, 'Failed to query the database');

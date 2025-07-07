@@ -8,7 +8,7 @@ export async function createTable() {
     await db.query(`
       CREATE TABLE IF NOT EXISTS polling_queue (
         id SERIAL PRIMARY KEY,
-        steam_id TEXT NOT NULL,
+        steamid TEXT NOT NULL,
         callback_url TEXT NOT NULL,
         initial BOOLEAN NOT NULL DEFAULT FALSE,
         status TEXT NOT NULL DEFAULT 'pending'

@@ -8,7 +8,7 @@ export async function createTable() {
     await db.query(`
       CREATE TABLE IF NOT EXISTS achievements (
         id SERIAL PRIMARY KEY,
-        steam_id TEXT NOT NULL,
+        steamid TEXT NOT NULL,
         appid TEXT NOT NULL,
         game_name TEXT NOT NULL,
         achievement_name TEXT NOT NULL,

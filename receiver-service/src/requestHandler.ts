@@ -9,8 +9,8 @@ const logger = pino();
 export const router = Router();
 
 router.post('/', async (req: Request, res: Response) => {
-    const { steam_id, appid, achievements } = req.body;
-    if (!steam_id || !appid || !achievements || !Array.isArray(achievements)) {
+    const { steamid, appid, achievements } = req.body;
+    if (!steamid || !appid || !achievements || !Array.isArray(achievements)) {
         logger.error('Missing or invalid steam_id, appid, or achievements in request body');
         res.status(400).json({ error: 'Missing or invalid steam_id, appid, or achievements' });
         return;
@@ -22,12 +22,12 @@ router.post('/', async (req: Request, res: Response) => {
                 `INSERT INTO achievements (steam_id, appid, game_name, achievement_name, unlock_time, description)
                  VALUES ($1, $2, $3, $4, to_timestamp($5), $6)
                  ON CONFLICT (steam_id, appid, achievement_name, unlock_time) DO NOTHING`,
-                [steam_id, appid, achievement.gamename || 'Unknown Game', name, unlocktime, description]
+                [steamid, appid, achievement.gamename || 'Unknown Game', name, unlocktime, description]
             );
         });
 
         await Promise.all(insertAchievements);
-        logger.info(`Achievements received and stored for steamid ${steam_id} and appid ${appid}`);
+        logger.info(`Achievements received and stored for steamid ${steamid} and appid ${appid}`);
         res.status(201).json({ message: 'Achievements received and stored' });
     }
     catch (e) {
@@ -37,10 +37,10 @@ router.post('/', async (req: Request, res: Response) => {
 })
 
 router.get('/', async (req: Request, res: Response) => {
-    const { steam_id, appid } = req.query;
+    const { steamid, appid } = req.query;
 
         // Validate query parameters if provided
-        if (steam_id && !/^\d{17}$/.test(steam_id as string)) {
+        if (steamid && !/^\d{17}$/.test(steamid as string)) {
             res.status(400).json({error: 'Invalid steam_id format. It should be a 17-digit numeric string.'});
             return;
         }
@@ -55,9 +55,9 @@ router.get('/', async (req: Request, res: Response) => {
         const conditions: string[] = [];
         const values: any[] = [];
 
-        if (steam_id) {
+        if (steamid) {
             conditions.push(`steam_id = $${values.length + 1}`);
-            values.push(steam_id);
+            values.push(steamid);
         }
 
         if (appid) {
