@@ -12,8 +12,7 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
-app.use(requireAPIKey);
-app.use('/notify', notificationReceiver);
+app.use('/notify', requireAPIKey, notificationReceiver);
 
 app.get('/', (req, res) => {
     res.send('Polling service is running!');

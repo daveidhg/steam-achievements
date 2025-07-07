@@ -12,8 +12,7 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
-app.use(requireAPIKey)
-app.use('/subscriptions', subscriptionRouter);
+app.use('/subscriptions', requireAPIKey, subscriptionRouter);
 
 app.get('/', (req, res) => {
     res.send('Subscription service is running!')
