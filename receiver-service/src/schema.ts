@@ -14,7 +14,7 @@ export async function createTable() {
         achievement_name TEXT NOT NULL,
         unlock_time TIMESTAMP NOT NULL,
         description TEXT,
-        UNIQUE(steam_id, appid, achievement_name, unlock_time)
+        UNIQUE(steamid, appid, achievement_name, unlock_time)
       );
     `);
     logger.info('Table created or already exists');

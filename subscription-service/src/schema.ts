@@ -11,7 +11,7 @@ export async function createTables() {
         steamid TEXT NOT NULL,
         callback_url TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(steam_id, callback_url)
+        UNIQUE(steamid, callback_url)
       );
     `);
     logger.info('Table created or already exists');
