@@ -27,7 +27,7 @@ router.post('/', async (req: Request, res: Response) => {
         });
 
         await Promise.all(insertAchievements);
-        logger.info(`Achievements received and stored for steam ID ${steam_id}`);
+        logger.info(`Achievements received and stored for steamid ${steam_id} and appid ${appid}`);
         res.status(201).json({ message: 'Achievements received and stored' });
     }
     catch (e) {

@@ -58,24 +58,39 @@ export async function getAchievements(steamId: string, appId: string) {
         if (!STEAM_ACHIEVEMENTS_URL) {
             throw new Error("STEAM_ACHIEVEMENTS_URL is not defined in environment variables.")
         }
-        const response = await axios.get(STEAM_ACHIEVEMENTS_URL, {
-            params: {
-                key: STEAM_API_KEY,
-                steamid: steamId,
-                appid: appId,
-                l: 'en' // Language parameter gets name + description of achievements
+        try {
+            const response = await axios.get(STEAM_ACHIEVEMENTS_URL, {
+                params: {
+                    key: STEAM_API_KEY,
+                    steamid: steamId,
+                    appid: appId,
+                    l: 'en' // Language parameter gets name + description of achievements
+                }});
+            if (response.data.playerstats?.success && response.data.playerstats.achievements?.length > 0) {
+                // Remove achievements that are not unlocked
+                var unlockedAchevements = response.data.playerstats.achievements.filter((achievement: any) => achievement.achieved === 1);
+                return unlockedAchevements.map((achievement: any) => ({
+                    name: achievement.name,
+                    description: achievement.description,
+                    unlocktime: achievement.unlocktime,
+                    gamename: response.data.playerstats.gameName
+                }));
             }
-        });
-        if (response.data && response.data.playerstats && response.data.playerstats.achievements) {
-            // Remove achievements that are not unlocked
-            var unlockedAchevements = response.data.playerstats.achievements.filter((achievement: any) => achievement.achieved === 1);
-            return unlockedAchevements.map((achievement: any) => ({
-                name: achievement.name,
-                description: achievement.description,
-                unlocktime: achievement.unlocktime,
-                gamename: response.data.playerstats.gameName
-            }));
+            return []; // No achievements available for this appId
         }
+
+        // Handle 400 Bad Request error specifically
+        catch (e) {
+            if (axios.isAxiosError(e) && e.response?.status === 400) {
+                logger.info(`No stats available for appid ${appId}`);
+                return []; // No achievements available for this appId
+            }
+            else {
+                throw e;
+            }
+        }
+
+
     }
     catch (e) {
         logger.error(e, `Failed to fetch achievements from Steam API for appId ${appId}`);

@@ -34,17 +34,26 @@ async function handlePollingQueue() {
             // Limit requests to avoid hitting API limits
             await new Promise(f => setTimeout(f, 2000)); 
 
-            var achievements = await getAchievements(steam_id, game.appid);
+            try {
+                var achievements = await getAchievements(steam_id, game.appid);
+            }
+            catch (e) {
+                logger.error(e, `Failed to fetch achievements for Steam ID: ${steam_id}, App ID: ${game.appid}`);
+                continue; // Skip to the next game if fetching achievements fails
+            }
+            
             if (!initial) {
                 // Filter out achievements unlocked more than 24 hours ago
                 achievements = achievements.filter((achievement: any) => (Date.now() / 1000 - achievement.unlocktime) > (60 * 60 * 24)); 
             }
-            await axios.post(callback_url, {
-                apikey: process.env.API_KEY,
-                steam_id: steam_id,
-                appid: game.appid,
-                achievements: achievements
-            })
+            if (achievements.length > 0) {
+                await axios.post(callback_url, {
+                    apikey: process.env.API_KEY,
+                    steam_id: steam_id,
+                    appid: game.appid,
+                    achievements: achievements
+                });
+            }
         };
         await db.query(`UPDATE polling_queue SET status = 'completed' WHERE id = $1`, [id]);
         logger.info(`Successfully processed Steam ID: ${steam_id}`);

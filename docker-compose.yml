@@ -8,7 +8,8 @@ services:
     env_file:
       - ./subscription-service/.env
     depends_on:
-      - subscription-db
+      subscription-db:
+        condition: service_healthy
 
   subscription-db:
     image: postgres:16.9
@@ -19,6 +20,11 @@ services:
       POSTGRES_DB: subscription-db
     volumes:
       - subscription-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d subscription-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   polling-service:
     build:
@@ -29,7 +35,8 @@ services:
     env_file:
       - ./polling-service/.env
     depends_on:
-      - polling-queue-db
+      polling-queue-db:
+        condition: service_healthy
 
   polling-queue-db:
     image: postgres:16.9
@@ -40,6 +47,11 @@ services:
       POSTGRES_DB: polling-queue-db
     volumes:
       - polling-queue-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d polling-queue-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   receiver-service:
     build:
@@ -50,7 +62,8 @@ services:
     env_file:
       - ./receiver-service/.env
     depends_on:
-      - receiver-db
+      receiver-db:
+        condition: service_healthy
 
   receiver-db:
     image: postgres:16.9
@@ -61,6 +74,11 @@ services:
       POSTGRES_DB: receiver-db
     volumes:
       - receiver-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d receiver-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   subscription-db-data:

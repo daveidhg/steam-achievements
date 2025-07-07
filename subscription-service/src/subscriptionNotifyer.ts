@@ -13,11 +13,13 @@ export async function notifyPollingService(subscriptions: { steam_id: string, ca
     for (const subscription of subscriptions) {
         try {
             await axios.post(process.env.POLLING_URL, {
-                apikey: process.env.API_KEY,
                 steam_id: subscription.steam_id,
                 callback_url: subscription.callback_url,
                 initial: initial
-            })
+            },
+            {
+                headers: {apikey: process.env.API_KEY}
+        });
             logger.info(`Notified polling service for subscription: ${subscription.steam_id} - ${subscription.callback_url}`);
         }
         catch (e) {
