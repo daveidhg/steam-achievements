@@ -1,6 +1,6 @@
 # Steam Achievements Webhook System
 
-A microservice-based system that allows users to subscribe to Steam accounts and receive real-time notifications when achievements are unlocked in supported games.
+A microservice-based system that allows users to subscribe to Steam accounts and receive notifications when achievements are unlocked in supported games.
 
 ## Overview
 
