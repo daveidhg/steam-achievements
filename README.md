@@ -96,7 +96,7 @@ Deletes a subscription
 }
 ```
 `steamid` must be a 17-digit steamID64. \
-`callback_url` is optional - defaults to `receiver-service`.
+`callback_url` the related URL you no longer want to send webhooks to.
 
 **Responses:**
 - `200 OK` if the subscription is deleted (or did not exist)
@@ -207,13 +207,13 @@ Stores achievements in the receiver database
             "name": "Flamethrower",
             "unlocktime": 1451087373,
             "description": "Set five enemies on fire in 30 seconds.",
-            "gameName": "Team Fortress 2"
+            "gamename": "Team Fortress 2"
         },
         {
             "name": "Nemesis",
             "unlocktime": 1526635333,
             "description": "Get five revenge kills.",
-            "gameName": "Team Fortress 2"
+            "gamename": "Team Fortress 2"
         }
     ]
 }
@@ -316,3 +316,5 @@ http://localhost:5002/achievements?steamid=your_steam_id&appid=440
 ```
 
 *Note* - You don't need to wait for the polling process to be completely finished to run these if you don't need **ALL** achievements.
+
+### All API endpoints can be tested through the insomnia collection found in [/doc](doc/API-tests-Insomnia.yaml)

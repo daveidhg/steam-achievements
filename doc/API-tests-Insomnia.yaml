@@ -1,0 +1,297 @@
+type: collection.insomnia.rest/5.0
+name: Scratch Pad
+meta:
+  id: wrk_scratchpad
+  created: 1751974271503
+  modified: 1751974271503
+  description: ""
+collection:
+  - url: http://localhost:5000/subscriptions
+    name: Add subscription
+    meta:
+      id: req_99d7b148dc78472f9120f226bb9713a1
+      created: 1751974372911
+      modified: 1751974508495
+      isPrivate: false
+      description: ""
+      sortKey: -1751974372911
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"steamid": "76561198209602109"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: apikey
+      disabled: false
+      key: apikey
+      value: apikey
+      addTo: header
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5000/subscriptions
+    name: Delete subscription
+    meta:
+      id: req_b1af2ccc126c4fceb2f86ddef7cfa0d0
+      created: 1751974527289
+      modified: 1751974648708
+      isPrivate: false
+      description: ""
+      sortKey: -1751974527289
+    method: DELETE
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"steamid": "76561198249359216",
+        	"callback_url": "http://receiver-service:5002/achievements"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: apikey
+      disabled: false
+      key: apikey
+      value: apikey
+      addTo: header
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5000/subscriptions
+    name: Get subscriptions
+    meta:
+      id: req_dd72e5f23e5d4b46abb6a6557de2de42
+      created: 1751974659497
+      modified: 1751974717779
+      isPrivate: false
+      description: ""
+      sortKey: -1751974659497
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: apikey
+      disabled: false
+      key: apikey
+      value: apikey
+      addTo: header
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5001/notify
+    name: Add steamid to polling queue
+    meta:
+      id: req_a8b87527076841d89091bbb57f6a31f3
+      created: 1751974724813
+      modified: 1751974956343
+      isPrivate: false
+      description: ""
+      sortKey: -1751974724813
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"steamid": "your_steam_id",
+        	"callback_url": "http://receiver-service:5002/achievements",
+        	"initial": false
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: apikey
+      disabled: false
+      key: apikey
+      value: apikey
+      addTo: header
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5002/achievements
+    name: Add achievements to receiver
+    meta:
+      id: req_9dea7d91158c40cfa6adfd2c5ecb904a
+      created: 1751974964653
+      modified: 1751976039672
+      isPrivate: false
+      description: ""
+      sortKey: -1751975164474
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"steamid": "12345678901234567",
+        	"appid": "440",
+        	"achievements": [
+        		{
+        			"name": "Flamethrower",
+        			"unlocktime": 1451087373,
+        			"description": "Set five enemies on fire in 30 seconds.",
+        			"gamename": "Team Fortress 2"
+        		},
+        		{
+        			"name": "Nemesis",
+        			"unlocktime": 1526635333,
+        			"description": "Get five revenge kills",
+        			"gamename": "Team Fortress 2"
+        		}
+        	]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5002/achievements
+    name: Get ALL achievements
+    meta:
+      id: req_d3c9be84b14b4634959e37461a27d745
+      created: 1751975364295
+      modified: 1751975423260
+      isPrivate: false
+      description: ""
+      sortKey: -1751975364295
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5002/achievements
+    name: Get achievements for specific game and steamid
+    meta:
+      id: req_0b19323b46354ed89499bf04e2e9fac2
+      created: 1751975427454
+      modified: 1751975468682
+      isPrivate: false
+      description: ""
+      sortKey: -1751975427454
+    method: GET
+    parameters:
+      - id: pair_877276692cb24b8b82fa04294bcf69e0
+        name: appid
+        value: "440"
+        description: ""
+        disabled: false
+      - id: pair_73c1c3d777284e38991fd06e23767b54
+        name: steamid
+        value: "12345678901234567"
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5002/achievements
+    name: Add more achievements from different game
+    meta:
+      id: req_d59939ed58c9460f974d74619ebeea38
+      created: 1751975791201
+      modified: 1751976003356
+      isPrivate: false
+      description: ""
+      sortKey: -1751975264384.5
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"steamid": "12345678901234567",
+        	"appid": "123",
+        	"achievements": [
+        		{
+        			"name": "AchievementName",
+        			"unlocktime": 1451087373,
+        			"description": "Do something",
+        			"gamename": "Game Name"
+        		},
+        		{
+        			"name": "AnotherAchievement",
+        			"unlocktime": 1526635333,
+        			"description": "Do something else",
+        			"gamename": "Game Name"
+        		}
+        	]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1751974285389
+    modified: 1751974285389
+environments:
+  name: Base Environment
+  meta:
+    id: env_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1751974285309
+    modified: 1751974285309
+    isPrivate: false
