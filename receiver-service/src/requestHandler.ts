@@ -11,7 +11,7 @@ export const router = Router();
 router.post('/', async (req: Request, res: Response) => {
     const { steamid, appid, achievements } = req.body;
     if (!steamid || !appid || !achievements || !Array.isArray(achievements)) {
-        logger.error('Missing or invalid steam_id, appid, or achievements in request body');
+        logger.error('Missing or invalid steamid, appid, or achievements in request body');
         res.status(400).json({ error: 'Missing or invalid steamid, appid, or achievements' });
         return;
     }
@@ -41,7 +41,7 @@ router.get('/', async (req: Request, res: Response) => {
 
         // Validate query parameters if provided
         if (steamid && !/^\d{17}$/.test(steamid as string)) {
-            res.status(400).json({error: 'Invalid steam_id format. It should be a 17-digit numeric string.'});
+            res.status(400).json({error: 'Invalid steamid format. It should be a 17-digit numeric string.'});
             return;
         }
 
@@ -56,7 +56,7 @@ router.get('/', async (req: Request, res: Response) => {
         const values: any[] = [];
 
         if (steamid) {
-            conditions.push(`steam_id = $${values.length + 1}`);
+            conditions.push(`steamid = $${values.length + 1}`);
             values.push(steamid);
         }
 
