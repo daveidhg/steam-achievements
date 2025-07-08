@@ -285,3 +285,34 @@ Gets all achievements matching the set criteria
     "message": "No achievements found for the given criteria"
 }
 ```
+
+## Testing Guide
+
+After spinning up the system, you are now ready to test its functionality.
+
+1. Gather your steamID64. 
+    * This will be the default ID from a steam profile page URL if no custom URL is set.
+    * If a custom URL is set you can find the ID by pasting the custom URL into a "steam ID finder", for example [here](https://steamid.io/).
+
+2. *(optional)* if you have a custom endpoint you want the webhooks sent to, note down its URL and use it in the next step.
+
+3. Send an HTTP POST request to http://localhost:5000/subscribe with the following body, with the `callback_url` being optional for custom endpoints:
+```json
+{
+    "steamid": "your_steam_id",
+    "callback_url": "your_custom_endpoint"
+}
+```
+
+4. Watch the logging messages telling you what is happening, starting with the subscription-service saving the subscription to its database and sending a polling request to the polling service, the polling service will tell you if an appid has no new achievements or no stats available and the receiver-service will tell you if achievements are successfully stored. 
+
+5. When polling service logs `"Successfully processed steamid: your_steam_id"`, you can request them from the `receiver-service` by running the following GET request:
+```
+http://localhost:5002/achievements
+```
+This will return **ALL** stored achievements. Optionally, the parameters `steamid` and `appid` can be added to the request:
+```
+http://localhost:5002/achievements?steamid=your_steam_id&appid=440
+```
+
+*Note* - You don't need to wait for the polling process to be completely finished to run these if you don't need **ALL** achievements.
