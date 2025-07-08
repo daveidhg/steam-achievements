@@ -50,6 +50,7 @@ Register a new subscription.
 
 **Headers:**
 - `apikey: your_api_key` - This is configured in .env
+- `Content-Type: application/json`
 
 **Body:**
 ```json
@@ -87,6 +88,7 @@ Deletes a subscription
 
 **Headers:**
 - `apikey: your_api_key` - This is configured in .env
+- `Content-Type: application/json`
 
 **Body:**
 ```json
@@ -150,6 +152,7 @@ Adds an entry to the polling queue
 
 **Headers:**
 - `apikey: your_api_key` - This is configured in .env
+- `Content-Type: application/json`
 
 **Body:**
 ```json
@@ -196,6 +199,9 @@ Adds an entry to the polling queue
 
 #### `POST /achievements` 
 Stores achievements in the receiver database
+
+**Headers:**
+- `Content-Type: application/json`
 
 **Body:**
 ```json 
