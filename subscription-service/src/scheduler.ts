@@ -8,12 +8,12 @@ dotenv.config();
 const logger = pino();
 
 export function startDailySubscriptionScheduler() {
-    // Schedule a job to run every day at 12:00 GMT +2
-    // Minute, Hour, Day of Month, Month, Day of Week
+    // Schedule a job to run every day at 12:00 Europe/Oslo time
+    // cron format: Minute, Hour, Day of Month, Month, Day of Week
     cron.schedule('0 12 * * *', async () => {
         logger.info('Running daily subscription job');
         try {
-            const result = await db.query('SELECT steam_id, callback_url FROM subscriptions')
+            const result = await db.query('SELECT steamid, callback_url FROM subscriptions')
             const subscriptions = result.rows;
 
             if (subscriptions.length === 0) {
@@ -25,5 +25,7 @@ export function startDailySubscriptionScheduler() {
         catch (e) {
             logger.error({ e }, 'Failed to fetch subscriptions from database');
         }
+    }, {
+        timezone: 'Europe/Oslo'
     })
 }
