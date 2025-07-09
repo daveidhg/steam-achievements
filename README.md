@@ -311,6 +311,61 @@ Gets all achievements matching the set criteria
 }
 ```
 
+---
+
+`GET achievements/graphdata`
+Gets the data needed to draw the graph seen in `achievements/graph`.
+
+**Parameters:** \
+`steamid` 17 digit steamID64 - *optional* \
+`appid` id of the game you want to retrieve achievements from - *optional*
+
+**Responses:**
+- `200 OK`
+```json
+{
+    "keys": [
+        "2015-07-30",
+        "2016-03-24",
+        "2019-11-12"
+    ],
+    "values": [
+        2, 6, 19
+    ]
+}
+```
+
+- `400 Bad Request` if the steamid or appid is invalid
+```json
+{
+    "error": "Invalid steamid format. It should be a 17-digit numeric string."
+}
+
+{
+    "error": "Invalid appid format. It should be a numeric string."
+}
+```
+
+- `404 Not Found` if the request found no achievements
+```json
+{
+    "message": "No achievements found for the given criteria"
+}
+```
+
+---
+
+`GET /achievements/graph`
+This returns an html document showing the graph data in a graph, so it should be ran in a web browser
+
+**Parameters:** \
+`steamid` 17 digit steamID64 - *optional* \
+`appid` id of the game you want to retrieve achievements from - *optional*
+
+**Responses:**
+- `200 OK` 
+It will always return the html document, even though the parameters are invalid. The html document will display the error message coming from the `/achievements/graphdata` request that is forwarded based on the parameters provided here.
+
 ## Testing Guide
 
 After spinning up the system, you are now ready to test its functionality.
@@ -340,6 +395,14 @@ This will return **ALL** stored achievements. Optionally, the parameters `steami
 http://localhost:5002/achievements?steamid=your_steam_id&appid=440
 ```
 
+You can also get a cumulative graph showing the amount of achievements over time through the `/graph` endpoint:
+```
+http://localhost:5002/achievements/graph
+```
+Or with the optional parameters like the other endpoint:
+```
+http://localhost:5002/achievements/graph?steamid=your_steam_id&appid=440
+```
 *Note* - You don't need to wait for the polling process to be completely finished to run these if you don't need **ALL** achievements.
 
 ### All API endpoints can be tested through the insomnia collection found in [/doc](doc/API-tests-Insomnia.yaml)

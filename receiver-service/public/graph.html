@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cumulative Achievements Graph</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+</head>
+<body>
+  <h2>Cumulative Achievements Over Time</h2>
+  <div id="errorMessage"; display: none;></div>
+  <div style="height: 100vh; display: flex; justify-content: center; align-items: center;">
+    <canvas id="achievementChart" style="max-height: 600px; width: 90%;"></canvas>
+  </div>
+  <script>
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      const query = [];
+      if (params.has('steamid')) query.push(`steamid=${params.get('steamid')}`);
+      if (params.has('appid')) query.push(`appid=${params.get('appid')}`);
+      return query.length ? '?' + query.join('&') : '';
+    }
+
+    async function drawChart() {
+        const res = await fetch('/achievements/graphdata' + getQueryParams());
+        if (!res.ok) {
+          throw new Error(`${res.status} ${res.statusText}: ${await res.text()}`);
+        }
+        const data = await res.json();
+
+        const context = document.getElementById('achievementChart').getContext('2d');
+        new Chart(context, {
+          type: 'line',
+          data: {
+            labels: data.keys,
+            datasets: [{
+              label: 'Achievements',
+              data: data.values,
+              borderColor: 'blue',
+              backgroundColor: 'lightblue',
+              fill: true,
+              tension: 0.3,
+              pointRadius: 0,
+              pointHoverRadius: 5,
+              hitRadius: 10,
+              hoverRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                distribution: 'linear',
+                type: 'time',
+                title: { display: true, text: 'Date' }
+              },
+              y: {
+                title: { display: true, text: 'Cumulative Achievements' }
+              }
+            }
+          }
+        });
+      }
+
+      drawChart().catch(e => {
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.display = 'block';
+        errorMessage.textContent = `Error fetching data: ${e.message}`;
+      });
+
+  </script>
+</body>
+</html>

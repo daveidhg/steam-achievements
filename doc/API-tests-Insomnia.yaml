@@ -298,6 +298,59 @@ collection:
         send: true
         store: true
       rebuildPath: true
+  - url: http://localhost:5002/achievements/graphdata
+    name: Get graphdata used to display cumulative achievements
+    meta:
+      id: req_f0f3dfe7619142c0bd984159d8be3d25
+      created: 1752070933399
+      modified: 1752070988148
+      isPrivate: false
+      description: ""
+      sortKey: -1752070933399
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5002/achievements/graphdata
+    name: Get graphdata for specific steamid and appid
+    meta:
+      id: req_ea9c1bd809b04176b2be55be845a006e
+      created: 1752071002329
+      modified: 1752071049854
+      isPrivate: false
+      description: ""
+      sortKey: -1752071002329
+    method: GET
+    parameters:
+      - id: pair_6df4cb7740c142ca8442295708f4f60e
+        name: steamid
+        value: "12345678901234567"
+        description: ""
+        disabled: false
+      - id: pair_7193bc5127f84b6384f9ac0d82ee89b2
+        name: appid
+        value: "440"
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
