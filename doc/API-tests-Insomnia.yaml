@@ -46,7 +46,7 @@ collection:
     meta:
       id: req_b1af2ccc126c4fceb2f86ddef7cfa0d0
       created: 1751974527289
-      modified: 1751974648708
+      modified: 1752059912143
       isPrivate: false
       description: ""
       sortKey: -1751974527289
@@ -55,7 +55,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"steamid": "76561198249359216",
+        	"steamid": "76561198209602109",
         	"callback_url": "http://receiver-service:5002/achievements"
         }
     headers:
@@ -109,7 +109,7 @@ collection:
     meta:
       id: req_a8b87527076841d89091bbb57f6a31f3
       created: 1751974724813
-      modified: 1751974956343
+      modified: 1752059916027
       isPrivate: false
       description: ""
       sortKey: -1751974724813
@@ -118,7 +118,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"steamid": "your_steam_id",
+        	"steamid": "76561198209602109",
         	"callback_url": "http://receiver-service:5002/achievements",
         	"initial": false
         }
@@ -190,7 +190,7 @@ collection:
     meta:
       id: req_d3c9be84b14b4634959e37461a27d745
       created: 1751975364295
-      modified: 1752059486406
+      modified: 1752059711574
       isPrivate: false
       description: ""
       sortKey: -1751975364295
