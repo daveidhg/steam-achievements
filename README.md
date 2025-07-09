@@ -248,30 +248,49 @@ Gets all achievements matching the set criteria
 **Parameters:** \
 `steamid` 17 digit steamID64 - *optional* \
 `appid` id of the game you want to retrieve achievements from - *optional*
+`stats` set true if stats are wanted *optional*
 
 **Responses:**
 - `200 OK`
 ```json
-[
-    {
-        "id": 1,
-        "steamid": "12345678901234567",
-        "appid": "440",
-        "game_name": "Team Fortress 2",
-        "achievement_name": "Flamethrower",
-        "unlock_time": "2015-12-25T23:49:33.000Z",
-        "description": "Set five enemies on fire in 30 seconds."
+{
+    "stats": {
+        "total_achievements": 2,
+        "total_games": 1,
+        "average_per_game": 2,
+        "best_streak_days": 1,
+        "achievements_by_weekday": {
+            "Monday": 0,
+            "Tuesday": 0,
+            "Wednesday": 0,
+            "Thursday": 0,
+            "Friday": 2,
+            "Saturday": 0,
+            "Sunday": 0
+        }
     },
-    {
-        "id": 2,
-        "steamid": "12345678901234567",
-        "appid": "440",
-        "game_name": "Team Fortress 2",
-        "achievement_name": "Nemesis",
-        "unlock_time": "2018-05-18T09:22:13.000Z",
-        "description": "Get five revenge kills."
-    }
-]
+    "achievements":
+        [
+            {
+                "id": 1,
+                "steamid": "12345678901234567",
+                "appid": "440",
+                "game_name": "Team Fortress 2",
+                "achievement_name": "Flamethrower",
+                "unlock_time": "2015-12-25T23:49:33.000Z",
+                "description": "Set five enemies on fire in 30 seconds."
+            },
+            {
+                "id": 2,
+                "steamid": "12345678901234567",
+                "appid": "440",
+                "game_name": "Team Fortress 2",
+                "achievement_name": "Nemesis",
+                "unlock_time": "2018-05-18T09:22:13.000Z",
+                "description": "Get five revenge kills."
+            }
+        ]
+}
 ```
 
 - `400 Bad Request` if the steamid or appid is invalid

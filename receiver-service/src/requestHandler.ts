@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import pino from 'pino';
 import { db } from './db';
 import dotenv from 'dotenv';
+import { createStats } from './stats';
 
 dotenv.config();
 const logger = pino();
@@ -37,7 +38,7 @@ router.post('/', async (req: Request, res: Response) => {
 })
 
 router.get('/', async (req: Request, res: Response) => {
-    const { steamid, appid } = req.query;
+    const { steamid, appid, stats } = req.query;
 
         // Validate query parameters if provided
         if (steamid && !/^\d{17}$/.test(steamid as string)) {
@@ -76,6 +77,13 @@ router.get('/', async (req: Request, res: Response) => {
             res.status(404).json({ message: 'No achievements found for the given criteria' });
             return;
         }
+
+        if (stats === 'true') {
+            const stats = createStats(result.rows);
+            res.status(200).json({"stats": stats, "achievements": result.rows});
+            return;
+        } 
+
         res.status(200).json(result.rows);
     }
     catch (e) {

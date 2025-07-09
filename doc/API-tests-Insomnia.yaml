@@ -186,15 +186,26 @@ collection:
         store: true
       rebuildPath: true
   - url: http://localhost:5002/achievements
-    name: Get ALL achievements
+    name: Get ALL achievements and stats
     meta:
       id: req_d3c9be84b14b4634959e37461a27d745
       created: 1751975364295
-      modified: 1751975423260
+      modified: 1752059486406
       isPrivate: false
       description: ""
       sortKey: -1751975364295
     method: GET
+    parameters:
+      - id: pair_ba632f6f8f6d40699a2f9628902c0fd1
+        name: stats
+        value: "true"
+        description: ""
+        disabled: false
+      - id: pair_4008a12894e94e5eb98929e9a3d387a8
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
     headers:
       - name: User-Agent
         value: insomnia/11.2.0
@@ -207,11 +218,11 @@ collection:
         store: true
       rebuildPath: true
   - url: http://localhost:5002/achievements
-    name: Get achievements for specific game and steamid
+    name: Get achievements for specific game and steamid including stats
     meta:
       id: req_0b19323b46354ed89499bf04e2e9fac2
       created: 1751975427454
-      modified: 1751975468682
+      modified: 1752059416553
       isPrivate: false
       description: ""
       sortKey: -1751975427454
@@ -225,6 +236,11 @@ collection:
       - id: pair_73c1c3d777284e38991fd06e23767b54
         name: steamid
         value: "12345678901234567"
+        description: ""
+        disabled: false
+      - id: pair_4bfff9d1401e45b185cb6b936c209487
+        name: stats
+        value: "true"
         description: ""
         disabled: false
     headers:
